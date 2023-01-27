@@ -2,7 +2,7 @@
 
 I wanted to test how a custom plugin could be integrated into a logstash pipeline using the builtin http filter plugin. Two services written in python and go expose a HTTP API and return the received message from the body with a string prefix.   
 
-**⚠️ This is a quick and dirty proof of concept example! Security and error handling is not a concern here! In the real world your webservice would be of course top notch!**
+**⚠️ This is a quick and dirty proof of concept example! Security or error handling is not a concern here!**
 
 ## Usage
 
