@@ -1,6 +1,6 @@
 # logstash-http-example
 
-I wanted to test how a custom plugin could be integrated into a logstash pipeline using the builtin http filter plugin. Two services written in python and go expose a HTTP API and return the received message from the body with a string prefix.   
+I wanted to test how a custom plugin could be integrated into a logstash pipeline using the builtin http filter plugin. A go plugin providing the HTTP service mimicks some transforming service.
 
 **⚠️ This is a quick and dirty proof of concept example! Security or error handling is not a concern here!**
 
@@ -10,20 +10,27 @@ It's a docker compose project, so simply run:
 
 > docker compose up
 
-And you should see somethign like:
+And you should see something like:
 
-> logstash-http-plugin-logstash-1      | {   
-> logstash-http-plugin-logstash-1      |                  "message" => "Sample line 1",   
-> logstash-http-plugin-logstash-1      |     "http_response_python" => "Received: Sample line 1",   
-> logstash-http-plugin-logstash-1      |         "http_response_go" => "Received: Sample line 1"   
-> logstash-http-plugin-logstash-1      | }   
-> logstash-http-plugin-logstash-1      | {   
-> logstash-http-plugin-logstash-1      |                  "message" => "Sample line 2",   
-> logstash-http-plugin-logstash-1      |     "http_response_python" => "Received: Sample line 2",   
-> logstash-http-plugin-logstash-1      |         "http_response_go" => "Received: Sample line 2"   
-> logstash-http-plugin-logstash-1      | }
-
-
-The "message" field contains the string read from the `sample.log` file. It then get's sent to both services which prefix the received message with `Received: ` and return the result. Logstash then puts the respective answer either into the field `http_response_python` or `http_reponse_go`.
+> logstash-http-plugin-logstash-1  | {   
+> logstash-http-plugin-logstash-1  |            "message" => "Sample fox 3",   
+> logstash-http-plugin-logstash-1  |      "response_json" => {   
+> logstash-http-plugin-logstash-1  |          "number_doubled" => 6,   
+> logstash-http-plugin-logstash-1  |         "animal_repeated" => "foxfox"   
+> logstash-http-plugin-logstash-1  |     },   
+> logstash-http-plugin-logstash-1  |             "number" => "3",   
+> logstash-http-plugin-logstash-1  |             "animal" => "fox",   
+> logstash-http-plugin-logstash-1  |     "response_plain" => "Received: 3"   
+> logstash-http-plugin-logstash-1  | }   
+> logstash-http-plugin-logstash-1  | {   
+> logstash-http-plugin-logstash-1  |            "message" => "Sample snake 4",   
+> logstash-http-plugin-logstash-1  |      "response_json" => {   
+> logstash-http-plugin-logstash-1  |          "number_doubled" => 8,   
+> logstash-http-plugin-logstash-1  |         "animal_repeated" => "snakesnake"   
+> logstash-http-plugin-logstash-1  |     },   
+> logstash-http-plugin-logstash-1  |             "number" => "4",   
+> logstash-http-plugin-logstash-1  |             "animal" => "snake",   
+> logstash-http-plugin-logstash-1  |     "response_plain" => "Received: 4"   
+> logstash-http-plugin-logstash-1  | }
 
 Exit the setup with Ctrl + C.

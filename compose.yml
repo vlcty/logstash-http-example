@@ -1,26 +1,14 @@
 ---
 services:
-  goplugin:
+  plugin:
     build: .
     ports:
       - 8080:8080
-
-  pythonplugin:
-    image: python:3-slim
-    ports:
-      - 8090:8090
-    volumes:
-      - type: bind
-        source: ./server.py
-        target: /server.py
-        read_only: true
-    command: python3 /server.py
   
   logstash:
     image: docker.elastic.co/logstash/logstash-oss:8.6.1-arm64
     depends_on:
-      - goplugin
-      - pythonplugin
+      - plugin
     volumes:
       - type: bind
         source: ./logstash.conf
